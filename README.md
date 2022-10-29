@@ -8,7 +8,7 @@ Caesar's cipher uses a substitution method where letters in the alphabet are shi
 
 The best idea that came to my mind was to shift each word through every number (this code is limited to 20 as it is an example and it can be modificable) and compare the result of the shifting with an English dictionary of 50.000 words. When the code found a match, it would be added to the "finaltext" string.
 
-I included 3 English dictionaries, of 1000
+I included 2 English dictionaries, the first one with the 1000 most common English words, and the second one with 58110 words.
 
 Apart from encoding messages, the code can also decode messages knowing the fixed number of positions the letters switch.
 
