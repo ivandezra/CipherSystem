@@ -5,7 +5,7 @@ import random
 #alphabet
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-with open("corncob_lowercase.txt") as file:
+with open("58110") as file:
     lines = file.readlines()
     lines = [line.rstrip() for line in lines]
 
