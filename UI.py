@@ -1,23 +1,41 @@
-from tkinter import *
-from tkinter import messagebox
 import random
+import string
+from tkinter import *
 
 #alphabet
-alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+alphabet = list(string.ascii_lowercase)
 
-with open("58110") as file:
+#create list of words from dictionary
+with open("58110.txt") as file:
     lines = file.readlines()
     lines = [line.rstrip() for line in lines]
 
+#divide list of words
+dct = {}
+for element in lines:
+    if len(element) not in dct:
+        dct[len(element)] = [element]
+    elif len(element) in dct:
+        dct[len(element)] += [element] 
+res = []
+for key in sorted(dct):
+    res.append(dct[key])
+
 #decoding function
 def decode():
+  #receive input and divide string into list
   originaltext=str(textentry.get())
   originaltext=originaltext.split(" ")
   finaltext=""
+  e=1
   for word in originaltext:
-    for i in range(0, 20):
+    wordlength=len(word)
+    possiblewords=[]
+    #range of numbers to try
+    for i in range(0, 27):
       newword=""
       for letter in word:
+        #is letter in the lowercase alphabet?
         if letter in alphabet:
           position=alphabet.index(letter)
           newposition=position+i
@@ -26,6 +44,7 @@ def decode():
           elif newposition<0:
             newposition+=26
           newword+=alphabet[newposition]
+        #is letter in the uppercase alphabet?
         elif letter.isupper()==True:
           lower=letter.lower()
           position=alphabet.index(lower)
@@ -35,12 +54,26 @@ def decode():
           elif newposition<0:
             newposition+=26
           newword+=alphabet[newposition].upper()
+        #rest of the characters are not changed
         else:
           newword+=letter
-      for w in lines:
-        if newword.lower()==w and len(newword)==len(w):
-          finaltext+=newword
-    finaltext+=" "
+      #compares new word with every word with the same length
+      for w in dct[wordlength]:
+        if newword.lower()==w.lower():
+          possiblewords.append(newword)
+          continue
+    #displays different options when there are more than two "matches"
+    if len(possiblewords)==1:
+      finaltext+=possiblewords[0]
+      finaltext+=" "
+    else:
+      finaltext+="[{}]".format(e)
+      clicked = StringVar()
+      clicked.set("[{}]".format(e))
+      drop=OptionMenu(root, clicked, *possiblewords)
+      drop.pack(padx=5, side=LEFT)
+      finaltext+=" "
+      e+=1
   Frame2 = Frame(root,bg="SteelBlue3")
   Frame2.place(relx=0.13,rely=0.9, relwidth=0.7,relheight=0.3)
   label2 = Label(Frame1,text=finaltext,bg="SteelBlue3",fg='azure',font=('Courier',13,'bold'))
@@ -48,18 +81,22 @@ def decode():
 
 #encoding function
 def encode():
+  #receive input and divide string into list
   originaltext=str(textentry.get())
   originaltext=originaltext.split(" ")
   finaltext=""
   for word in originaltext:
-    shiftnumber=random.randint(0, 20)
+    #generates a random shiftnumber
+    shiftnumber=random.randint(1, 20)
     for letter in word:
+      #is letter in the lowercase alphabet?
       if letter in alphabet:
         position=alphabet.index(letter)
         newposition=position+int(shiftnumber)
         if newposition>25:
           newposition%=26
         finaltext+=alphabet[newposition]
+      #is letter in the uppercase alphabet?
       elif letter.isupper()==True:
         lower=letter.lower()
         position=alphabet.index(lower)
@@ -67,9 +104,12 @@ def encode():
         if newposition>25:
           newposition%=26
         finaltext+=alphabet[newposition].upper()
+      #rest of the characters are not changed
       else:
         finaltext+=letter
     finaltext+=" "
+  #copy output to clipboard
+  root.clipboard_append(finaltext.rstrip())
   Frame2 = Frame(root,bg="SteelBlue3")
   Frame2.place(relx=0.13,rely=0.7, relwidth=0.7,relheight=0.3)
   label2 = Label(Frame1,text=finaltext,bg="SteelBlue3",fg='azure',font=('Courier',13,'bold'))
