@@ -118,13 +118,13 @@ def encode():
 #main GUI
 root = Tk()
 root.geometry('700x700')
-root.title("Encryption System")
+root.title("Cipher System")
 root.config(bg='SteelBlue3')
 
 #header
 headingFrame = Frame(root,bg="azure",bd=5)
 headingFrame.place(relx=0.15,rely=0.05,relwidth=0.7,relheight=0.1)
-headingLabel = Label(headingFrame, text="Welcome to the Encryption System", bg='azure', font=('Helvetica',20,'bold'))
+headingLabel = Label(headingFrame, text="Welcome to the Cipher System", bg='azure', font=('Helvetica',20,'bold'))
 headingLabel.place(relx=0,rely=0, relwidth=1, relheight=1)
 
 #text input
